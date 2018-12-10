@@ -1,62 +1,62 @@
-import { orderTotal } from './index'
+import { orderTotal, fetchOrderdersAndCalculateTotal } from './index'
 
 describe('Sum without quantity', () => {
-  const orders = [
-    {
-      name: 'Lager',
-      price: 10
-    },
-    {
-      name: 'APA',
-      price: 15
-    }
-  ]
+    const orders = [
+        {
+            name: 'Lager',
+            price: 10
+        },
+        {
+            name: 'APA',
+            price: 15
+        }
+    ]
 
-  test('Happy path failed!', () => {
-    expect(
-      orderTotal(orders)
-    ).toBe(25)
-  })
+    test('Happy path failed!', () => {
+        expect(
+            orderTotal(orders)
+        ).toBe(25)
+    })
 
-  test('Empty order list must equals 0!', () => {
-    expect(
-      orderTotal([])
-    ).toBe(0)
-  })
+    test('Empty order list must equals 0!', () => {
+        expect(
+            orderTotal([])
+        ).toBe(0)
+    })
 })
 
 describe('Sum WITH quantity', () => {
-  const ordersWithQuantity = [
-    {
-      name: 'Lager',
-      price: 10,
-      quantity: 2
-    },
-    {
-      name: 'APA',
-      price: 15,
-      quantity: 1
-    }
-  ]
+    const ordersWithQuantity = [
+        {
+            name: 'Lager',
+            price: 10,
+            quantity: 2
+        },
+        {
+            name: 'APA',
+            price: 15,
+            quantity: 1
+        }
+    ]
 
-  test('Fails to calculate sum with quantity!', () => {
-    expect(
-      orderTotal(ordersWithQuantity)
-    ).toBe(35)
-  })
+    test('Fails to calculate sum with quantity!', () => {
+        expect(
+            orderTotal(ordersWithQuantity)
+        ).toBe(35)
+    })
 
-  test('Fails to calculate sum with ZERO quantity!', () => {
-    expect(
-      orderTotal([{
-        name: 'Lager',
-        price: 10,
-        quantity: 0
-      }])
-    ).toBe(0)
-  })
+    test('Fails to calculate sum with ZERO quantity!', () => {
+        expect(
+            orderTotal([{
+                name: 'Lager',
+                price: 10,
+                quantity: 0
+            }])
+        ).toBe(0)
+    })
 })
 
-describe('Sum with shipping', ()=> {
+describe('Sum with shipping', () => {
     const orders = [
         {
             name: 'Lager',
@@ -82,14 +82,22 @@ describe('Sum with shipping', ()=> {
         }
     ]
 
-    test('Free shipping >= 200', ()=> {
+    test('Free shipping >= 200', () => {
         expect(
             orderTotal(orders)
         ).toBe(1000)
     })
-    test('Paid shipping <= 200', ()=> {
+    test('Paid shipping <= 200', () => {
         expect(
             orderTotal(orders)
         ).toBe(1000)
+    })
+})
+describe('Fetching data to calculate sum', () => {
+    test('Fetching data without quantity', () => {
+        return (
+            fetchOrderdersAndCalculateTotal()
+                .then(total => expect(total).toBe(25))
+        )
     })
 })
